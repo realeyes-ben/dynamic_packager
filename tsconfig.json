@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "target": "ES6",
-        "module": "system",
+        "module": "commonjs",
+        "outDir": "./dist/",
         "moduleResolution": "node",
         "sourceMap": true,
         "emitDecoratorMetadata": true,

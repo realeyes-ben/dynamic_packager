@@ -4,6 +4,9 @@
   "description": "Dynamic Packager Prototype",
   "main": "index.js",
   "scripts": {
+    "dev": "echo dev",
+    "start": "echo start",
+    "build": "echo build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,8 +20,24 @@
   },
   "homepage": "https://github.com/realeyes-ben/dynamic_packager#readme",
   "devDependencies": {
+    "@types/chai": "^4.2.9",
+    "@types/express": "^4.17.2",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^13.7.1",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^7.0.1",
+    "prettier": "^1.19.1",
+    "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
