@@ -1,0 +1,24 @@
+{
+  "name": "dynamic_packager",
+  "version": "0.0.0",
+  "description": "Dynamic Packager Prototype",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realeyes-ben/dynamic_packager.git"
+  },
+  "author": "Realeyes Media",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/realeyes-ben/dynamic_packager/issues"
+  },
+  "homepage": "https://github.com/realeyes-ben/dynamic_packager#readme",
+  "devDependencies": {
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}
