@@ -5,7 +5,7 @@ LABEL email="ben.toofer@realeyes.com"
 
 ENV BENTO Bento4-SDK-1-5-1-629.x86_64-unknown-linux
 
-RUN apt-get update && apt-get install -y unzip wget
+RUN apt-get update && apt-get install -y unzip wget openssl
 
 RUN wget http://zebulon.bok.net/Bento4/binaries/${BENTO}.zip -O /var/tmp/Bento4.zip \
     && unzip var/tmp/Bento4.zip -d var/tmp \

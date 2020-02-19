@@ -11,6 +11,7 @@
         "noImplicitAny": true
     },
     "exclude": [
+        "test_asset",
         "node_modules"
     ]
 }
