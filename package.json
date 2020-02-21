@@ -8,7 +8,7 @@
     "start": "echo start",
     "build": "echo build",
     "lint": "eslint --ext .ts src/** test/**",
-    "test": "nyc --reporter=html mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "nyc --reporter=html mocha --color -r ts-node/register test/helper.spec.ts test/**/*.ts "
   },
   "repository": {
     "type": "git",

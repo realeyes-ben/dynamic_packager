@@ -10,8 +10,6 @@ export const command = (command: string, options?: string[]): Promise<ArrayBuffe
 
     return new Promise((resolve, reject) => {
         spawnedProcess.stdout.on('data', (data: ArrayBuffer) => {
-            console.warn('Will resolve');
-            console.log(JSON.stringify(data.toString()));
             resolve(data);
         });
 
