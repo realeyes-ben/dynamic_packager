@@ -1,25 +1,11 @@
-import { Commands, command } from './command';
-import { TrackType, FragmentCommandOptionsMap } from './bento4_util';
-
-const createOptionString = (key: string, value?: string): string => {
-    if (value === undefined) {
-        return '';
-    }
-    return `--${key} ${value}`;
-};
-
-const generateOptions = (optionStuff: string[]) => (options: IFragmentOptions): string[] => {
-    const optionsString = Object.keys(options).reduceRight(
-        (prevValue: string[], optionKey: string) => [...prevValue, createOptionString()],
-        [],
-    );
-    return optionsString;
-};
+import { Commands, command, generateOptions } from "./command";
+import { TrackType, FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap } from "./bento4_util";
 
 export class Bento4 {
-    private static generatemp4FragmentOptions = generateOptions([]);
+    private static generateMP4FragmentOptions = generateOptions<mp4fragmentOptionsMap, IMp4FragmentOptions>(FragmentCommandOptionsMap);
+    private static generateMP4DashOptions = generateOptions<any, any>();
 
-    public static mp4dash(): Promise<ArrayBuffer> {
+    public static mp4dash(inputPath: string, outputPath: string): Promise<ArrayBuffer> {
         return command(Commands.mp4dash);
     }
 
@@ -32,16 +18,14 @@ export class Bento4 {
         timescale?: number,
         duration?: number,
     ): Promise<ArrayBuffer> {
-        const options = Bento4.generatemp4FragmentOptions({
-            inputPath,
-            outputPath,
+        const options = Bento4.generateMP4FragmentOptions({
             debug,
             index,
             track,
             timescale,
             duration,
         });
-        return command(Commands.mp4fragment, options);
+        return command(Commands.mp4fragment, [...options, inputPath, outputPath]);
     }
 }
 

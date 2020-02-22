@@ -14,5 +14,6 @@ module.exports = {
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/interface-name-prefix": ["error",{ "prefixWithI": "always"}],
         "semi": ["error", "always"],
+        "quotes": ["error", "double", { "allowTemplateLiterals": true }]
     },
 };

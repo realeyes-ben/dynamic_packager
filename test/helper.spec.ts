@@ -1,7 +1,9 @@
-import * as fs from 'fs';
-import { resolve } from 'path';
+import * as fs from "fs";
+import { resolve } from "path";
 
-const TEMP_DIRECTORY = './tmp';
+const TEMP_DIRECTORY = "./tmp";
+
+export const TEST_ASSETS_PATH = resolve(__dirname, "../test_asstets");
 
 const doesExist = (path: string): Promise<boolean> => {
     return new Promise<boolean>(res => {
