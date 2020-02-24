@@ -1,9 +1,9 @@
 import { Commands, command, generateOptions } from "./command";
-import { TrackType, FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap } from "./bento4_util";
+import { TrackType, FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap, mp4dashOptionsMap, IMp4DashOptions, DashCommandOptionsMap } from "./bento4_util";
 
 export class Bento4 {
     private static generateMP4FragmentOptions = generateOptions<mp4fragmentOptionsMap, IMp4FragmentOptions>(FragmentCommandOptionsMap);
-    private static generateMP4DashOptions = generateOptions<any, any>();
+    private static generateMP4DashOptions = generateOptions<mp4dashOptionsMap, IMp4DashOptions>(DashCommandOptionsMap);
 
     public static mp4dash(inputPath: string, outputPath: string): Promise<ArrayBuffer> {
         return command(Commands.mp4dash);

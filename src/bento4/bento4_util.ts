@@ -4,6 +4,13 @@ export enum TrackType {
     SUBTITLES = "subtitles",
 }
 
+export enum EncryptionSchemes {
+    CENC = "cenc",
+    CBC1 = "cbc1",
+    CENS = "cens",
+    cbcs = "cbcs"
+}
+
 /**
  * mp4fragment
  */
@@ -39,6 +46,10 @@ export const FragmentCommandOptionsMap: mp4fragmentOptionsMap = {
  * mp4dash
  */
 export interface IMp4DashOptions {
+    verbose: boolean;
+    debug: boolean;
+    outputDir?: string;
+    force: boolean;
     mpdName?: string;
     profiles: "live" | "on-demand" | "hbbtv-1.5";
     noMedia: boolean;
@@ -49,4 +60,39 @@ export interface IMp4DashOptions {
     useSegmentList: boolean;
     useSegmentTempalte: boolean;
     useSegmentTimeline: boolean;
+    /**
+     *  Minimum buffer time (in seconds)
+     */
+    minBufferTime?: number;
+    maxPlayoutRate?: number // Stategy. Look this up
+    languageMap?: string[];
+    alwaysOutputLang: boolean;
+    subtitles: boolean;
+    // TODO (ben.toofer@realeyes.com): Finish all options
+    encryptionCENCScheme?: EncryptionSchemes;
 }
+
+export type mp4dashOptionsMap = { [K in keyof IMp4DashOptions]: string };
+
+export const DashCommandOptionsMap: mp4dashOptionsMap = {
+    verbose: "verbose",
+    debug: "debug",
+    outputDir: "output-dir",
+    force: "force",
+    mpdName: "mpd-name",
+    profiles: "profiles",
+    noMedia: "no-media",
+    renameMedia: "rename-media",
+    mediaPrefix: "media-prefix",
+    initSegment: "init-segment",
+    noSpilt: "no-split",
+    useSegmentList: "use-segment-list",
+    useSegmentTempalte: "use-segment-template-number-padding",
+    useSegmentTimeline: "use-segment-timeline",
+    minBufferTime: "min-buffer-time",
+    maxPlayoutRate: "max-playout-rate",
+    languageMap: "language-map",
+    alwaysOutputLang: "always-output-lang",
+    subtitles: "subtitles",
+    encryptionCENCScheme: "encryption-cenc-scheme"
+};
