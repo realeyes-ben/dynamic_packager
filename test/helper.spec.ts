@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import { resolve } from "path";
+import * as rimraf from "rimraf";
 
 const TEMP_DIRECTORY = "./tmp";
 
@@ -16,7 +17,7 @@ const doesExist = (path: string): Promise<boolean> => {
 
 const removeTemporaryDirectory = (path: string): Promise<void> => {
     return new Promise((res, rej) => {
-        fs.rmdir(path, (err) => {
+        rimraf(path, (err) => {
             if (err){
                 rej(err);
             } else {
@@ -31,7 +32,7 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
         doesExist(path)
         .then(exists => {
             if (exists) {
-                console.warn(`Direcotry: ${resolve(__dirname, path)} already exists. Removing`);
+                console.warn(`Direcotry: ${path} already exists. Removing`);
                 return removeTemporaryDirectory(path);
             }
             return Promise.resolve();
@@ -49,9 +50,9 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
 };
 
 before(() => {
-    return createTemporaryDirectory(TEMP_DIRECTORY);
+    return createTemporaryDirectory(WRITE_TO_PATH);
 });
 
 after(() => {
-    return removeTemporaryDirectory(TEMP_DIRECTORY);
+    return removeTemporaryDirectory(WRITE_TO_PATH);
 });

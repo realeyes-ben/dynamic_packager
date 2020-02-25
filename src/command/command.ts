@@ -11,7 +11,6 @@ type OptionsMap = { [x: string]: string };
 type Options = { [x: string]: any };
 
 export const command = (command: string, options?: string[]): Promise<ArrayBuffer> => {
-    console.warn(`${command} ${options}`);
     const spawnedProcess: ChildProcessWithoutNullStreams = spawn(command, options);
 
     return new Promise((resolve, reject) => {

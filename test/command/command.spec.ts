@@ -1,7 +1,7 @@
 import "mocha";
 import { expect } from "chai";
 
-import { command, generateOptions } from "../../src/bento4/command";
+import { command, generateOptions } from "../../src/command/command";
 import { FragmentCommandOptionsMap, mp4fragmentOptionsMap, IMp4FragmentOptions, TrackType } from "../../src/bento4/bento4_util";
 
 describe("Command Module", () => {

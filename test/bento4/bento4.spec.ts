@@ -10,7 +10,8 @@ describe("Bento4", () => {
     describe("mp4fragment", () => {
         const MP4FRAGMENT_OUTPUT = "mp4_fragment";
         const ASSET = "tears_of_steel_teaser.mp4";
-        const ASSET_FRAGMENTED = resolve(WRITE_TO_PATH, MP4FRAGMENT_OUTPUT, ASSET);
+
+        const ASSET_FRAGMENTED = resolve(WRITE_TO_PATH, ASSET);
         const tearsOfSteelMp4 = resolve(TEST_ASSETS_PATH, "unfragmented_mp4", ASSET);
         const baseMp4FragmentOptions: IMp4FragmentOptions = {
             debug: false,
@@ -19,21 +20,18 @@ describe("Bento4", () => {
             trim: false,
             noTFDT: false,
         };
-        it.only("should successfully fragment an mp4 asset", (done) => {
+        it("should successfully fragment an mp4 asset", (done) => {
             Bento4.mp4fragment(tearsOfSteelMp4, ASSET_FRAGMENTED, baseMp4FragmentOptions)
-                .then((data) => {
-                    console.log(data);
-                    done();
-                })
-                .catch(err => {
-                    console.log("ERROR");
-                    console.log(err);
-                    assert.fail(err);
-                });
+                .then(() => done())
+                .catch(err => assert.fail(err));
         });
 
-        it("should reject fragmenting if it does not have an mp4 extension", () => {
-            // Bento4.mp4fragment()
+        it("should catch when wrong input is specified", (done) => {
+            Bento4.mp4fragment("./wrong", ASSET_FRAGMENTED, baseMp4FragmentOptions)
+                .then(() => {
+                    assert.fail("Successfully fragmented. Should have failed");
+                })
+                .catch(() => done());
         });
     });
 });

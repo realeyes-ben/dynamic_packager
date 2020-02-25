@@ -1,4 +1,4 @@
-import { Commands, command, generateOptions } from "./command";
+import { Commands, command, generateOptions } from "../command/command";
 import { FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap, mp4dashOptionsMap, IMp4DashOptions, DashCommandOptionsMap } from "./bento4_util";
 
 // TODO (ben.toofer@realeyes.com): Verify that command binary path is set
