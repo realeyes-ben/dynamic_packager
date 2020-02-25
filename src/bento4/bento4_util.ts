@@ -20,8 +20,8 @@ export interface IMp4FragmentOptions {
     index: boolean;
     trim: boolean;
     noTFDT: boolean;
-    forceIFrameSync: "auto" | "all";
-    verbosity: 0 | 1 | 2 | 3;
+    forceIFrameSync?: "auto" | "all";
+    verbosity?: 0 | 1 | 2 | 3;
     track?: TrackType;
     timescale?: number;
     duration?: number;

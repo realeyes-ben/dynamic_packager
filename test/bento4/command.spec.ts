@@ -48,7 +48,7 @@ describe("Command Module", () => {
             ]);
         });
 
-        it("should generate base options", () => {
+        it("should generate custom options", () => {
             const extraOptions: IMp4FragmentOptions = {
                 debug: false,
                 quiet: false,
@@ -68,6 +68,17 @@ describe("Command Module", () => {
                 "--timescale 90000",
                 "--fragment-duration 2002"
             ]);
+        });
+
+        it("should generate no options", () => {
+            const extraOptions: IMp4FragmentOptions = {
+                debug: false,
+                quiet: false,
+                index: false,
+                trim: false,
+                noTFDT: false,
+            };
+            expect(fragmentCommandOptionGenerator(extraOptions)).to.eql([]);
         });
     });
 });

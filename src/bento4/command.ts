@@ -7,9 +7,11 @@ export enum Commands {
 
 type OptionsMap = { [x: string]: string };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Options = { [x: string]: any };
 
 export const command = (command: string, options?: string[]): Promise<ArrayBuffer> => {
+    console.warn(`${command} ${options}`);
     const spawnedProcess: ChildProcessWithoutNullStreams = spawn(command, options);
 
     return new Promise((resolve, reject) => {

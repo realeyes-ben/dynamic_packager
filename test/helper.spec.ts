@@ -3,7 +3,8 @@ import { resolve } from "path";
 
 const TEMP_DIRECTORY = "./tmp";
 
-export const TEST_ASSETS_PATH = resolve(__dirname, "../test_asstets");
+export const WRITE_TO_PATH = resolve(__dirname, TEMP_DIRECTORY);
+export const TEST_ASSETS_PATH = resolve(__dirname, "../test_assets");
 
 const doesExist = (path: string): Promise<boolean> => {
     return new Promise<boolean>(res => {
@@ -14,15 +15,19 @@ const doesExist = (path: string): Promise<boolean> => {
 };
 
 const removeTemporaryDirectory = (path: string): Promise<void> => {
-    return new Promise(res => {
-        fs.rmdir(path, () => {
-            res();
+    return new Promise((res, rej) => {
+        fs.rmdir(path, (err) => {
+            if (err){
+                rej(err);
+            } else {
+                res();
+            }
         });
     });
 };
 
 const createTemporaryDirectory = (path: string): Promise<void> => {
-    return new Promise((res) => {
+    return new Promise((res, rej) => {
         doesExist(path)
         .then(exists => {
             if (exists) {
@@ -32,7 +37,13 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
             return Promise.resolve();
         })
         .then(() => {
-            fs.mkdir(path, () => res());
+            fs.mkdir(path, (err) => {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
         });
     });
 };

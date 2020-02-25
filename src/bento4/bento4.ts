@@ -1,6 +1,7 @@
 import { Commands, command, generateOptions } from "./command";
-import { TrackType, FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap, mp4dashOptionsMap, IMp4DashOptions, DashCommandOptionsMap } from "./bento4_util";
+import { FragmentCommandOptionsMap, IMp4FragmentOptions, mp4fragmentOptionsMap, mp4dashOptionsMap, IMp4DashOptions, DashCommandOptionsMap } from "./bento4_util";
 
+// TODO (ben.toofer@realeyes.com): Verify that command binary path is set
 export class Bento4 {
     private static generateMP4FragmentOptions = generateOptions<mp4fragmentOptionsMap, IMp4FragmentOptions>(FragmentCommandOptionsMap);
     private static generateMP4DashOptions = generateOptions<mp4dashOptionsMap, IMp4DashOptions>(DashCommandOptionsMap);
@@ -12,20 +13,10 @@ export class Bento4 {
     public static mp4fragment(
         inputPath: string,
         outputPath: string,
-        debug = false,
-        index = true,
-        track?: TrackType,
-        timescale?: number,
-        duration?: number,
+        options: IMp4FragmentOptions
     ): Promise<ArrayBuffer> {
-        const options = Bento4.generateMP4FragmentOptions({
-            debug,
-            index,
-            track,
-            timescale,
-            duration,
-        });
-        return command(Commands.mp4fragment, [...options, inputPath, outputPath]);
+        const generatedOptions = Bento4.generateMP4FragmentOptions(options);
+        return command(Commands.mp4fragment, [...generatedOptions, inputPath, outputPath]);
     }
 }
 
