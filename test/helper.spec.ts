@@ -3,14 +3,24 @@ import { resolve } from "path";
 import * as rimraf from "rimraf";
 
 const TEMP_DIRECTORY = "./tmp";
+const UNFRAGMENTED_PATH = "unfragmented_mp4";
+const FRAGMENTED_PATH = "fragmented_mp4";
+const ASSET_1 = "tears_of_steel_teaser.mp4";
+const ASSET_2 = "video_mp4fragment.mp4";
 
 export const WRITE_TO_PATH = resolve(__dirname, TEMP_DIRECTORY);
 export const TEST_ASSETS_PATH = resolve(__dirname, "../test_assets");
+export const UNFRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, UNFRAGMENTED_PATH, ASSET_1);
+export const FRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, FRAGMENTED_PATH, ASSET_2);
 
 const doesExist = (path: string): Promise<boolean> => {
-    return new Promise<boolean>(res => {
+    return new Promise<boolean>((res, rej) => {
         fs.exists(path, (exists: boolean) => {
-            res(exists);
+            if (exists) {
+                res();
+            } else {
+                rej();
+            }
         });
     });
 };
@@ -30,14 +40,12 @@ const removeTemporaryDirectory = (path: string): Promise<void> => {
 const createTemporaryDirectory = (path: string): Promise<void> => {
     return new Promise((res, rej) => {
         doesExist(path)
-        .then(exists => {
-            if (exists) {
-                console.warn(`Direcotry: ${path} already exists. Removing`);
-                return removeTemporaryDirectory(path);
-            }
-            return Promise.resolve();
-        })
         .then(() => {
+            console.warn(`Directory: ${path} already exists. Removing`);
+            return removeTemporaryDirectory(path);
+        })
+        // .catch(() => null)
+        .finally(() => {
             fs.mkdir(path, (err) => {
                 if (err) {
                     rej(err);
@@ -46,6 +54,38 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
                 }
             });
         });
+
+        // .then(exists => {
+        //     if (exists) {
+        //         console.warn(`Direcotry: ${path} already exists. Removing`);
+        //         return removeTemporaryDirectory(path);
+        //     }
+        //     return Promise.resolve();
+        // })
+        // .then(() => {
+        //     fs.mkdir(path, (err) => {
+        //         if (err) {
+        //             rej(err);
+        //         } else {
+        //             res();
+        //         }
+        //     });
+        // });
+    });
+};
+
+export const readTestSegment = (path: string): Promise<ArrayBuffer> => {
+    return  new Promise ((res, rej) => {
+        doesExist(path)
+        .then(() => {
+            fs.readFile(path, (err, data) => {
+                if (err) {
+                    return rej(err);
+                }
+                return res(data.buffer);
+            });
+        })
+        .catch(() => rej(`${path} does not exist`));
     });
 };
 

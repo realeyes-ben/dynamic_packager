@@ -2,32 +2,38 @@ import "mocha";
 import { expect, assert } from "chai";
 import { resolve } from "path";
 
-import { TEST_ASSETS_PATH, WRITE_TO_PATH } from "../helper.spec";
+import { WRITE_TO_PATH, UNFRAGMENTED_MP4 } from "../helper.spec";
 import { Bento4 } from "../../src/bento4/bento4";
-import { IMp4FragmentOptions } from "../../src/bento4/bento4_util";
+import { IMp4FragmentOptions, TrackType } from "../../src/bento4/bento4_util";
 
 describe("Bento4", () => {
     describe("mp4fragment", () => {
-        const MP4FRAGMENT_OUTPUT = "mp4_fragment";
-        const ASSET = "tears_of_steel_teaser.mp4";
 
-        const ASSET_FRAGMENTED = resolve(WRITE_TO_PATH, ASSET);
-        const tearsOfSteelMp4 = resolve(TEST_ASSETS_PATH, "unfragmented_mp4", ASSET);
+        const VIDEO_WRITE_DESTINATION = resolve(WRITE_TO_PATH, "video_mp4fragment.mp4");
+        const AUDIO_WRITE_DESTINATION = resolve(WRITE_TO_PATH, "audio_mp4fragment.mp4");
         const baseMp4FragmentOptions: IMp4FragmentOptions = {
             debug: false,
             quiet: false,
-            index: false,
+            index: true,
             trim: false,
             noTFDT: false,
+            track: TrackType.VIDEO,
         };
-        it("should successfully fragment an mp4 asset", (done) => {
-            Bento4.mp4fragment(tearsOfSteelMp4, ASSET_FRAGMENTED, baseMp4FragmentOptions)
+        it("should successfully fragment an mp4 asset into video and audio", (done) => {
+            const promises = [
+                Bento4.mp4fragment(UNFRAGMENTED_MP4, VIDEO_WRITE_DESTINATION, baseMp4FragmentOptions),
+                Bento4.mp4fragment(UNFRAGMENTED_MP4, AUDIO_WRITE_DESTINATION, {...baseMp4FragmentOptions, track: TrackType.AUDIO})
+            ];
+            Promise.all(promises)
                 .then(() => done())
-                .catch(err => assert.fail(err));
+                .catch(err => {
+                    console.log(err);
+                    return assert.fail(err);
+                });
         });
 
         it("should catch when wrong input is specified", (done) => {
-            Bento4.mp4fragment("./wrong", ASSET_FRAGMENTED, baseMp4FragmentOptions)
+            Bento4.mp4fragment("./wrong", VIDEO_WRITE_DESTINATION, baseMp4FragmentOptions)
                 .then(() => {
                     assert.fail("Successfully fragmented. Should have failed");
                 })
@@ -35,3 +41,5 @@ describe("Bento4", () => {
         });
     });
 });
+
+//mp4fragment --track 'video' /Users/bentoofer/Developer/dynamic_packager/test_assets/unfragmented_mp4/tears_of_steel_teaser.mp4 /Users/bentoofer/Developer/dynamic_packager/test/tmp/mp4fragment.mp4

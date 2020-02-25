@@ -12,7 +12,6 @@ type Options = { [x: string]: any };
 
 export const command = (command: string, options?: string[]): Promise<ArrayBuffer> => {
     const spawnedProcess: ChildProcessWithoutNullStreams = spawn(command, options);
-
     return new Promise((resolve, reject) => {
         spawnedProcess.stdout.on("data", (data: ArrayBuffer) => {
             resolve(data);
@@ -33,20 +32,20 @@ export const command = (command: string, options?: string[]): Promise<ArrayBuffe
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const createOptionString = (key: string, value: any): string | undefined => {
+const createOptionString = (key: string, value: any): string[] => {
     if (typeof value === "boolean") {
         if (value) {
-            return `--${key}`;
+            return [`--${key}`];
         } else {
-            return undefined;
+            return [];
         }
     }
-    return `--${key} ${value}`;
+    return [`--${key}`, `${value}`];
 };
 
 export const generateOptions = <T extends OptionsMap, O extends Options>(optionsMap: T) => (options: O): string[] => {
     const optionsString = Object.keys(options).reduce(
-        (prevValue: string[], optionKey: string) => [...prevValue, createOptionString(optionsMap[optionKey], options[optionKey])],
+        (prevValue: string[], optionKey: string) => [...prevValue, ...createOptionString(optionsMap[optionKey], options[optionKey])],
         [],
     );
     return optionsString.filter(val => val !== undefined);

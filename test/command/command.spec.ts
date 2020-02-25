@@ -43,8 +43,10 @@ describe("Command Module", () => {
                 "--index",
                 "--trim",
                 "--no-tfdt",
-                "--force-i-frame-sync auto",
-                "--verbosity 0"
+                "--force-i-frame-sync",
+                "auto",
+                "--verbosity",
+                "0"
             ]);
         });
 
@@ -62,11 +64,16 @@ describe("Command Module", () => {
                 duration: 2002,
             };
             expect(fragmentCommandOptionGenerator(extraOptions)).to.eql([
-                "--force-i-frame-sync auto",
-                "--verbosity 0",
-                "--track video",
-                "--timescale 90000",
-                "--fragment-duration 2002"
+                "--force-i-frame-sync",
+                "auto",
+                "--verbosity",
+                "0",
+                "--track",
+                "video",
+                "--timescale",
+                "90000",
+                "--fragment-duration",
+                "2002"
             ]);
         });
 
