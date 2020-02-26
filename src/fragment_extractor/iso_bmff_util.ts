@@ -66,7 +66,37 @@ export const findBoxByOffset = (file: ArrayBuffer, byteOffset: number): IBox | n
         data: dv.buffer.slice(start, end),
     };
 };
+export class ISOBMFFUtil {
 
-export const ISOBMFFUtil = {
-    extractSIDX: (file: ArrayBuffer): IBox | null => findBoxByIndex("sidx", file),
-};
+    private box: IBox | null = null;
+
+    constructor(private file: ArrayBuffer) {}
+
+    public extractByType(type: string): ISOBMFFUtil {
+        this.box = findBoxByIndex(type, this.file);
+        return this;
+    }
+
+    public extractByOffset(byteOffset: number): ISOBMFFUtil {
+        this.box = findBoxByOffset(this.file, byteOffset);
+        return this;
+    }
+
+    public parseBox(): ISOBMFFUtil {
+
+        return this;
+    }
+
+    public getValue<T extends IBox>(): T | null {
+        return this.box as T;
+    }
+}
+
+new ISOBMFFUtil(new ArrayBuffer(0))
+.extractByType("sidx")
+.parseBox()
+.parseBox()
+.getValue();
+// export const ISOBMFFUtil = {
+//     extractSIDX: (file: ArrayBuffer): IBox | null => findBoxByIndex("sidx", file),
+// };
