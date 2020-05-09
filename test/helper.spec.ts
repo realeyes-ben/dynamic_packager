@@ -44,7 +44,7 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
             console.warn(`Directory: ${path} already exists. Removing`);
             return removeTemporaryDirectory(path);
         })
-        // .catch(() => null)
+        .catch(() => null)
         .finally(() => {
             fs.mkdir(path, (err) => {
                 if (err) {
@@ -54,23 +54,6 @@ const createTemporaryDirectory = (path: string): Promise<void> => {
                 }
             });
         });
-
-        // .then(exists => {
-        //     if (exists) {
-        //         console.warn(`Direcotry: ${path} already exists. Removing`);
-        //         return removeTemporaryDirectory(path);
-        //     }
-        //     return Promise.resolve();
-        // })
-        // .then(() => {
-        //     fs.mkdir(path, (err) => {
-        //         if (err) {
-        //             rej(err);
-        //         } else {
-        //             res();
-        //         }
-        //     });
-        // });
     });
 };
 

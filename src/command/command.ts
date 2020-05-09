@@ -5,7 +5,7 @@ export enum Commands {
     mp4fragment = "mp4fragment",
 }
 
-type OptionsMap = { [x: string]: string };
+type OptionsMap = { [x: string]: string | undefined };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Options = { [x: string]: any };
@@ -45,7 +45,12 @@ const createOptionString = (key: string, value: any): string[] => {
 
 export const generateOptions = <T extends OptionsMap, O extends Options>(optionsMap: T) => (options: O): string[] => {
     const optionsString = Object.keys(options).reduce(
-        (prevValue: string[], optionKey: string) => [...prevValue, ...createOptionString(optionsMap[optionKey], options[optionKey])],
+        (prevValue: string[], optionKey: string) => {
+        if (optionsMap[optionKey] !== undefined) {
+          return [...prevValue, ...createOptionString(optionsMap[optionKey] as string, options[optionKey])];
+        }
+        return prevValue;
+        },
         [],
     );
     return optionsString.filter(val => val !== undefined);
