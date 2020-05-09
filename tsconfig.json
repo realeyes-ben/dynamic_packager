@@ -9,6 +9,8 @@
         "experimentalDecorators": true,
         "removeComments": true,
         "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
         "lib": ["ES2015", "ES2017", "ES2018", "DOM"]
     },
     "exclude": [
