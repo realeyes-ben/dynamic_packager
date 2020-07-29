@@ -51,6 +51,7 @@ export interface IMp4DashOptions {
     outputDir?: string;
     force: boolean;
     mpdName?: string;
+    hls?: boolean;
     profiles: "live" | "on-demand" | "hbbtv-1.5";
     noMedia: boolean;
     renameMedia?: string;
@@ -58,7 +59,7 @@ export interface IMp4DashOptions {
     initSegment?: string;
     noSpilt: boolean;
     useSegmentList: boolean;
-    useSegmentTempalte: boolean;
+    useSegmentTemplate: boolean;
     useSegmentTimeline: boolean;
     /**
      *  Minimum buffer time (in seconds)
@@ -78,6 +79,7 @@ export const DashCommandOptionsMap: mp4dashOptionsMap = {
     verbose: "verbose",
     debug: "debug",
     outputDir: "output-dir",
+    hls: "hls",
     force: "force",
     mpdName: "mpd-name",
     profiles: "profiles",
@@ -87,7 +89,7 @@ export const DashCommandOptionsMap: mp4dashOptionsMap = {
     initSegment: "init-segment",
     noSpilt: "no-split",
     useSegmentList: "use-segment-list",
-    useSegmentTempalte: "use-segment-template-number-padding",
+    useSegmentTemplate: "use-segment-template-number-padding",
     useSegmentTimeline: "use-segment-timeline",
     minBufferTime: "min-buffer-time",
     maxPlayoutRate: "max-playout-rate",

@@ -6,8 +6,10 @@ export class Bento4 {
     private static generateMP4FragmentOptions = generateOptions<mp4fragmentOptionsMap, IMp4FragmentOptions>(FragmentCommandOptionsMap);
     private static generateMP4DashOptions = generateOptions<mp4dashOptionsMap, IMp4DashOptions>(DashCommandOptionsMap);
 
-    public static mp4dash(inputPath: string, outputPath: string): Promise<ArrayBuffer> {
-        return command(Commands.mp4dash);
+    public static mp4dash(inputMediaPaths: string[], options: IMp4DashOptions): Promise<ArrayBuffer> {
+        const generatedOptions = Bento4.generateMP4DashOptions(options);
+        console.warn([...generatedOptions, inputMediaPaths]);
+        return command(Commands.mp4dash, [...generatedOptions, ...inputMediaPaths]);
     }
 
     public static mp4fragment(

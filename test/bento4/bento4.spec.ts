@@ -2,9 +2,9 @@ import "mocha";
 import { expect, assert } from "chai";
 import { resolve } from "path";
 
-import { WRITE_TO_PATH, UNFRAGMENTED_MP4 } from "../helper.spec";
+import { WRITE_TO_PATH, UNFRAGMENTED_MP4, VIDEO_FRAGMENTED_MP4, AUDIO_FRAGMENTED_MP4 } from "../helper.spec";
 import { Bento4 } from "../../src/bento4/bento4";
-import { IMp4FragmentOptions, TrackType } from "../../src/bento4/bento4_util";
+import { IMp4DashOptions, IMp4FragmentOptions, TrackType } from "../../src/bento4/bento4_util";
 
 describe("Bento4", () => {
     describe("mp4fragment", () => {
@@ -39,6 +39,34 @@ describe("Bento4", () => {
                 })
                 .catch(() => done());
         });
+    });
+
+    describe.only("mp4dash", () => {
+        const baseMp4DashOptions: IMp4DashOptions = {
+            debug: false,
+            verbose: true,
+            hls: true,
+            force: true,
+            useSegmentTemplate: false,
+            useSegmentList: false,
+            useSegmentTimeline: false,
+            profiles: "hbbtv-1.5",
+            alwaysOutputLang: true,
+            subtitles: false,
+            outputDir: WRITE_TO_PATH,
+            mpdName: "dash_manifest.mpd",
+            noSpilt: true,
+            noMedia: false
+        };
+        it("should generate a dash manifest", (done) => {
+            Bento4.mp4dash([VIDEO_FRAGMENTED_MP4, AUDIO_FRAGMENTED_MP4], baseMp4DashOptions)
+                .then(() => done())
+                .catch((err) => {
+                    console.log(err);
+                    return assert.fail(err);
+                });
+        // This takes a while. Extending this tests timeout duration
+        }).timeout(5000);
     });
 });
 

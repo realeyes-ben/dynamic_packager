@@ -6,12 +6,14 @@ const TEMP_DIRECTORY = "./tmp";
 const UNFRAGMENTED_PATH = "unfragmented_mp4";
 const FRAGMENTED_PATH = "fragmented_mp4";
 const ASSET_1 = "tears_of_steel_teaser.mp4";
-const ASSET_2 = "video_mp4fragment.mp4";
+const VIDEO_ASSET_2 = "video_mp4fragment.mp4";
+const AUDIO_ASSET_2 = "audio_mp4fragment.mp4";
 
 export const WRITE_TO_PATH = resolve(__dirname, TEMP_DIRECTORY);
 export const TEST_ASSETS_PATH = resolve(__dirname, "../test_assets");
 export const UNFRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, UNFRAGMENTED_PATH, ASSET_1);
-export const FRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, FRAGMENTED_PATH, ASSET_2);
+export const VIDEO_FRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, FRAGMENTED_PATH, VIDEO_ASSET_2);
+export const AUDIO_FRAGMENTED_MP4 = resolve(TEST_ASSETS_PATH, FRAGMENTED_PATH, AUDIO_ASSET_2);
 
 const doesExist = (path: string): Promise<boolean> => {
     return new Promise<boolean>((res, rej) => {
@@ -77,5 +79,5 @@ before(() => {
 });
 
 after(() => {
-    return removeTemporaryDirectory(WRITE_TO_PATH);
+    // return removeTemporaryDirectory(WRITE_TO_PATH);
 });

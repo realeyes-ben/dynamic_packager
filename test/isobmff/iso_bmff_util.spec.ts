@@ -2,13 +2,42 @@ import "mocha";
 import { expect, assert } from "chai";
 
 import { findBoxByIndex, findByOffset, ISOBMFFContainer, ISOBMFFUtil } from "../../src/isobmff/iso_bmff_util";
-import { readTestSegment, FRAGMENTED_MP4, UNFRAGMENTED_MP4 } from "../helper.spec";
+import { readTestSegment, VIDEO_FRAGMENTED_MP4, UNFRAGMENTED_MP4 } from "../helper.spec";
 import { ISIDX } from "../../src/isobmff/boxes/sidx";
 import { IBox } from "../../src/isobmff/boxes/box";
 import { Optional } from "../../src/utils/optional";
 
 const validateFragment = (fragment: IBox): void => {
-  fragment;
+  let fragmentSize = 0;
+  // Look for moof
+  Optional.of(
+    findBoxByIndex("moof", fragment.dv.buffer, 0)
+  ).unwrap()
+  .then(
+    (moof) => {
+      expect(moof.type).to.eql("moof");
+      expect(moof.getAbsoluteOffset()).to.eql(fragment.dv.byteOffset);
+      fragmentSize += moof.size;
+    },
+    (err) => {
+      console.warn(err);
+    }
+  );
+
+  // Look for mdat
+  Optional.of(
+    findBoxByIndex("mdat", fragment.dv.buffer, 0)
+  ).unwrap()
+  .then(
+    (mdat) => {
+      fragmentSize += mdat.size;
+    },
+    (err) => {
+      console.warn(err);
+    }
+  );
+  console.warn(`FS: ${fragmentSize}`);
+  console.warn(`${fragment.size}`);
 };
 
 describe("ISOBMFFUtil", () => {
@@ -16,7 +45,7 @@ describe("ISOBMFFUtil", () => {
     describe("findBoxByIndex", () => {
 
         it("should find sidx in a fragmented mp4", (done) => {
-            readTestSegment(FRAGMENTED_MP4)
+            readTestSegment(VIDEO_FRAGMENTED_MP4)
             .then((data: ArrayBuffer) => {
                 const sidx = findBoxByIndex("sidx", data);
                 expect(sidx).to.not.be.undefined;
@@ -39,7 +68,7 @@ describe("ISOBMFFUtil", () => {
 
     describe("findByOffset", () => {
         it("should find moof in a unfragment mp4", (done) => {
-            readTestSegment(FRAGMENTED_MP4)
+            readTestSegment(VIDEO_FRAGMENTED_MP4)
             .then((data: ArrayBuffer) => {
                 const moof = findByOffset(data, 842);
                 expect(moof).to.not.be.undefined;
@@ -51,7 +80,7 @@ describe("ISOBMFFUtil", () => {
     });
 
     it("should parse the sidx", (done) => {
-      readTestSegment(FRAGMENTED_MP4)
+      readTestSegment(VIDEO_FRAGMENTED_MP4)
           .then((data: ArrayBuffer) => {
             Optional.of(
               ISOBMFFContainer
@@ -78,13 +107,13 @@ describe("ISOBMFFUtil", () => {
           .catch(err => console.log(err));
     });
 
-    it.only("should find ith fragment using sidx", (done) => {
-      readTestSegment(FRAGMENTED_MP4)
+    it("should find ith fragment using sidx", (done) => {
+      readTestSegment(VIDEO_FRAGMENTED_MP4)
         .then((data: ArrayBuffer) => {
           const mediaFile = ISOBMFFContainer.fromBuffer(data).getValue();
           Optional.of(mediaFile)
               .map(ISOBMFFUtil.extractSIDX)
-              .map<ISIDX>((box: IBox) => ISOBMFFUtil.parseBox<ISIDX>(box))
+              .map((box: IBox) => ISOBMFFUtil.parseBox<ISIDX>(box))
               .unwrap()
               .then(
                 (sidx) => {
